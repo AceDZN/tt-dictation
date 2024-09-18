@@ -289,7 +289,7 @@
                      "interactiveToggleShow":false
                   },
                   {
-                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;\"><strong>${secondLanguageCongratulations}</strong></span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 36px;font-family: Varela Round;\"><strong>${secondLanguageCongratulations}</strong></span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -315,7 +315,7 @@
                         0,
                         0.5,
                         -13.028996467590332,
-                        100.01041412353516
+                        145
                      ],
                      "height":872,
                      "width":872,

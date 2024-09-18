@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
           if (layer.type === 'txt') {
             return {
               ...layer,
-              info: `<p style="text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;"><span style="color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`
+              info: `<p style="text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;"><span style="color: rgb(79,79,79);font-size: 36px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`
             };
           }
           return layer;
