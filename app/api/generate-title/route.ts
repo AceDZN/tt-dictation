@@ -9,7 +9,7 @@ export async function POST(req: NextRequest) {
   try {
     const { wordPairsText, firstLanguage, secondLanguage } = await req.json();
 
-    const prompt = `Generate a short, catchy title for a dictation game with the following word pairs (${firstLanguage} - ${secondLanguage}): ${wordPairsText}`;
+    const prompt = `Generate a short, catchy title for a dictation game with the following word pairs (${firstLanguage} - ${secondLanguage}): ${wordPairsText}. plain string without quotation marks. Maximum 4 words.`;
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o-mini',

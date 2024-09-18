@@ -36,7 +36,6 @@ export function DictationForm() {
     { first: '', second: '' },
     { first: '', second: '' },
     { first: '', second: '' },
-    { first: '', second: '' }
   ])
   const [inputMethod, setInputMethod] = useState<'manual' | 'file'>('manual')
   const [file, setFile] = useState<File | null>(null)

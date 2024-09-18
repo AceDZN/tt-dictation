@@ -40,16 +40,16 @@ export async function POST(req: NextRequest) {
         switch (layer.id) {
           case 'first_column':
             layer.info = wordPairs.slice(0, firstColumnPairs).map(pair => 
-              `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+              `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
             ).join('');
             break;
           case 'second_column':
             layer.info = wordPairs.slice(firstColumnPairs, firstColumnPairs + secondColumnPairs).map(pair => 
-              `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+              `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
             ).join('');
             break;
           case 'game_title':
-            layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
+            layer.info = `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
             break;
         }
       }
@@ -59,13 +59,13 @@ export async function POST(req: NextRequest) {
     if (thirdColumnPairs > 0) {
       const thirdColumnLayer = JSON.parse(JSON.stringify(exampleStructure.data.structure.slides[0].layers.find(layer => layer.id === 'third_column')));
       thirdColumnLayer.info = wordPairs.slice(firstColumnPairs + secondColumnPairs).map(pair => 
-        `<p style="direction:rtl;text-align:right;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+        `<p style="text-align:right;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
       ).join('');
       introSlide.layers.push(thirdColumnLayer);
     }
 
     // Generate outro slide content
-    const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be Short and consice and written in ${secondLanguage}. Maximum of 6 words.`;
+    const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be Short and consice and written in ${secondLanguage}. plain string without quotation marks. Maximum 4 words.`;
     const outroResponse = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: zodResponseFormat(OutroContentSchema, "outro_content"),
@@ -105,12 +105,12 @@ export async function POST(req: NextRequest) {
               case 'word_in_first_language':
                 return {
                   ...layer,
-                  info: `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`
+                  info: `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`
                 };
               case 'example_sentence':
                 return {
                   ...layer,
-                  info: `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">${pair.sentence}</span></p>\n`
+                  info: `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">${pair.sentence}</span></p>\n`
                 };
               default:
                 return layer;
@@ -141,7 +141,7 @@ export async function POST(req: NextRequest) {
           if (layer.type === 'txt') {
             return {
               ...layer,
-              info: `<p><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`
+              info: `<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style="color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`
             };
           }
           return layer;
@@ -150,8 +150,8 @@ export async function POST(req: NextRequest) {
     ];
 
     // Update other necessary fields in the structure
-    dictationStructure.data.album_store.album.fields.name = title;
-    dictationStructure.data.album_store.album.fields.description = `Dictation game for ${firstLanguage} to ${secondLanguage}`;
+    //dictationStructure.data.album_store.album.fields.name = title;
+    //dictationStructure.data.album_store.album.fields.description = `Dictation game for ${firstLanguage} to ${secondLanguage}`;
     // Add more field updates as necessary
 
     // Generate a unique ID for the dictation

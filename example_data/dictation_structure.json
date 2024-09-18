@@ -1,129 +1,6 @@
 {
    "data":{
-      "album_store":{
-         "album":{
-            "pk":262338,
-            "model":"store.album",
-            "fields":{
-               "age_groups":[
-                  {
-                     "order":8,
-                     "id":8,
-                     "title":"8-9"
-                  }
-               ],
-               "origin_id":"e61602c0-74cb-11ef-81f8-1dcb3e5c1edf",
-               "language_locale":"IL",
-               "ready":4,
-               "age_group":8,
-               "category":105,
-               "update_date":"2024-09-17T12:16:45",
-               "modelName":"Album",
-               "author":{
-                  "last_name":"Sindalovsky",
-                  "picture":"https://content.tinytap.it/profile_pictures/thumbs/alex-sindalovsky.jpg?mod=20230404134334",
-                  "first_name":"Alex",
-                  "modelName":"UserProfile",
-                  "bio":"",
-                  "gender":null,
-                  "username":"alex-sindalovsky",
-                  "cover_photo":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/unzipped%2Fphoto1%2Fphoto1phone.jpg",
-                  "creation_dt":"2020-07-16T09:58:58",
-                  "rank":3,
-                  "user_type":"Teacher",
-                  "user_pk":5276218,
-                  "user_type_id":3,
-                  "plays_count":531,
-                  "is_staff":false,
-                  "prefered_age_group":3,
-                  "picture_update_dt":"2023-04-04T13:43:34",
-                  "referral_code":"wtzlFiRFKKUP",
-                  "id":5289688,
-                  "certified":false,
-                  "prefered_language":1
-               },
-               "languages":[
-                  {
-                     "code":"he",
-                     "description":"IL",
-                     "title":"Hebrew",
-                     "locale":"IL",
-                     "rtl":true,
-                     "abbrivation":"HE",
-                     "id":2,
-                     "localized":"עברית"
-                  }
-               ],
-               "source":0,
-               "version":4,
-               "structure_json":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/game.json",
-               "player_version":1.5,
-               "pk":262338,
-               "small_cover_image":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/coverImage.png?ver=4",
-               "status":0,
-               "hash":"g5ndg",
-               "description":"אימון להכתבה - מילים באנגלית",
-               "cover_color":"92ca5e",
-               "teacher_avatar":null,
-               "language":2,
-               "age_group_text":"8-9",
-               "link":"https://www.tinytap.com/activities/g5ndg/play/מילים-להכתבה-באנגלית-1",
-               "share_image":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/shareImage.png?ver=4",
-               "pub_date":"2024-09-17 12:00:16",
-               "slug":"מילים-להכתבה-באנגלית-1",
-               "categories":[
-                  105
-               ],
-               "name":"מילים להכתבה באנגלית - 1",
-               "categories_urls":[
-                  {
-                     "url":"category/105/learn-english-esl/",
-                     "id":105,
-                     "title":"Learn English (ESL)"
-                  }
-               ],
-               "cover_image":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/coverImage813x610.jpg?ver=4",
-               "language_abbrivation":"HE",
-               "unique_id":"e61602c0-74cb-11ef-81f8-1dcb3e5c1edf"
-            }
-         },
-         "languages":[
-            {
-               "code":"he",
-               "description":"IL",
-               "title":"Hebrew",
-               "locale":"IL",
-               "rtl":true,
-               "abbrivation":"HE",
-               "id":2,
-               "localized":"עברית"
-            }
-         ],
-         "updated":"2024-09-17T12:16:45",
-         "modelName":"AlbumStore",
-         "age_groups":[
-            {
-               "order":8,
-               "id":8,
-               "title":"8-9"
-            }
-         ],
-         "language":2,
-         "album_id":262338,
-         "editable":true,
-         "price":0,
-         "apple_product_id":"e61602c0-74cb-11ef-81f8-1dcb3e5c1edf",
-         "show_fullscreen_ads":false,
-         "rank":2,
-         "public":true,
-         "play_count":15,
-         "is_free":true,
-         "show_in_game_ads":false,
-         "private_hash":null,
-         "pk":262266,
-         "id":262266,
-         "likes_count":0
-      },
+      
       "album_share_image":"https://www.tinytap.com/activities/album/262338/share_image/",
       "plist_url":"https://content.tinytap.it/____1_e61602c0-74cb-11ef-81f8-1dcb3e5c1edf/unzipped/albumModal.plist",
       "album_play_link":"https://www.tinytap.com/activities/g5ndg/play/מילים-להכתבה-באנגלית-1",
@@ -165,7 +42,7 @@
                   },
                   {
                     "id": "first_column",
-                     "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord1} - ${langagueTwoWord1}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord2} - ${langagueTwoWord2}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord3} - ${langagueTwoWord3}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord4} - ${langagueTwoWord4}</span></p>\n<pstyle=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord5} - ${langagueTwoWord5}</span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord1} - ${langagueTwoWord1}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord2} - ${langagueTwoWord2}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord3} - ${langagueTwoWord3}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord4} - ${langagueTwoWord4}</span></p>\n<pstyle=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord5} - ${langagueTwoWord5}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -184,7 +61,7 @@
                   },
                   {
                     "id": "second_column",
-                     "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord6} - ${langagueTwoWord6}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord7} - ${langagueTwoWord7}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord8} - ${langagueTwoWord8}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord9} - ${langagueTwoWord9}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord10} - ${langagueTwoWord10}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord11} - ${langagueTwoWord11}</span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord6} - ${langagueTwoWord6}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord7} - ${langagueTwoWord7}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord8} - ${langagueTwoWord8}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord9} - ${langagueTwoWord9}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord10} - ${langagueTwoWord10}</span></p>\n<p style=\"text-align:center;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord11} - ${langagueTwoWord11}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -203,7 +80,7 @@
                   },
                   {
                     "id": "third_column",
-                     "info":"<p style=\"direction:rtl;text-align:right;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord12} - ${langagueTwoWord12}</span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord12} - ${langagueTwoWord12}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -222,7 +99,7 @@
                   },
                   {
                     "id": "game_title",
-                     "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\"><strong>${firstLanguageGameTitle}</strong></span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;\"><strong>${firstLanguageGameTitle}</strong></span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -233,7 +110,7 @@
                         -3.5936050415039062,
                         -229.40528869628906
                      ],
-                     "height":58,
+                     "height":90,
                      "width":531,
                      "interactiveLayerSound":"",
                      "type":"txt",
@@ -288,7 +165,7 @@
                   },
                   {
                     "id": "word_in_first_language",
-                     "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${firstLanguageWord}</span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${firstLanguageWord}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -307,7 +184,7 @@
                   },
                   {
                     "id": "example_sentence",
-                     "info":"<p><span style=\"color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;\">${sentence}</span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;\">${sentence}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
@@ -412,7 +289,7 @@
                      "interactiveToggleShow":false
                   },
                   {
-                     "info":"<p><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\"><strong>${secondLanguageCongratulations}</strong></span></p>\n",
+                     "info":"<p style=\"text-align:center; display: flex; align-content: center; justify-content: center; align-items: center; height:100%;\"><span style=\"color: rgb(79,79,79);font-size: 40px;font-family: Varela Round;\"><strong>${secondLanguageCongratulations}</strong></span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
                      "transform":[
