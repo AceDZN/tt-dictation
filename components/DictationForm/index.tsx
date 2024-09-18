@@ -105,7 +105,7 @@ export function DictationForm() {
 
       const data = await response.json()
       toast.success('Dictation created successfully')
-      router.push(`/dictation/${data.dictationId}`)
+      router.push(`/dictation/${data.dictationId}/play`)
     } catch (error) {
       console.error('Error creating dictation:', error)
       toast.error('Failed to create dictation')
