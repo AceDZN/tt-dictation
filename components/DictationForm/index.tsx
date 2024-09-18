@@ -29,15 +29,22 @@ const languages = [
 ]
 
 export function DictationForm() {
-  const [title, setTitle] = useState('')
+  const [title, setTitle] = useState('new dictation game')
   const [firstLanguage, setFirstLanguage] = useState('Hebrew')
   const [secondLanguage, setSecondLanguage] = useState('English')
   const [wordPairs, setWordPairs] = useState<WordPair[]>([
-    { first: '', second: '' },
-    { first: '', second: '' },
-    { first: '', second: '' },
-    { first: '', second: '' },
-    { first: '', second: '' },
+    { first: 'בית', second: 'house' },
+    { first: 'משפחה', second: 'family' },
+    { first: 'מטרה', second: 'goal' },
+    { first: 'סוג', second: 'type' },
+    { first: 'גודל', second: 'size' },
+    { first: 'צבע', second: 'color' },
+    { first: 'ספר', second: 'book' },
+    { first: 'עבודה', second: 'work' },
+    { first: 'זמן', second: 'time' },
+    { first: 'חבר', second: 'friend' },
+    { first: 'שולחן', second: 'table' },
+    { first: 'מים', second: 'water' }
   ])
   const [inputMethod, setInputMethod] = useState<'manual' | 'file'>('manual')
   const [file, setFile] = useState<File | null>(null)

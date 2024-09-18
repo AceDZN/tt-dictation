@@ -26,25 +26,31 @@ export async function POST(req: NextRequest) {
     const introSlide = JSON.parse(JSON.stringify(exampleStructure.data.structure.slides[0]));
     introSlide.layers = introSlide.layers.map(layer => {
       if (layer.type === 'txt') {
-        if (layer.info.includes('${firstLanguageGameTitle}')) {
-          layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
-        } else if (layer.info.includes('${langagueOneWord1}')) {
-          const wordPairLayers = [];
-          for (let i = 0; i < wordPairs.length; i += 6) {
-            const layerWordPairs = wordPairs.slice(i, i + 6);
-            const layerContent = layerWordPairs.map((pair, index) => 
+        switch (layer.id) {
+          case 'first_column':
+            layer.info = wordPairs.slice(0, 5).map(pair => 
               `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
             ).join('');
-            wordPairLayers.push({
-              ...layer,
-              info: layerContent
-            });
-          }
-          return wordPairLayers;
+            break;
+          case 'second_column':
+            layer.info = wordPairs.slice(5, 11).map(pair => 
+              `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+            ).join('');
+            break;
+          case 'third_column':
+            if (wordPairs[11]) {
+              layer.info = `<p style="direction:rtl;text-align:right;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${wordPairs[11].first} - ${wordPairs[11].second}</span></p>\n`;
+            } else {
+              layer.info = '';
+            }
+            break;
+          case 'game_title':
+            layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
+            break;
         }
       }
       return layer;
-    }).flat();
+    });
 
     // Generate outro slide content
     const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be encouraging and positive.`;
@@ -52,7 +58,7 @@ export async function POST(req: NextRequest) {
       model: 'gpt-4o-mini',
       response_format: zodResponseFormat(OutroContentSchema, "outro_content"),
       messages: [{ role: 'user', content: outroPrompt }],
-      max_tokens: 4000,
+      max_tokens: 500,
     });
     const outroContent = OutroContentSchema.parse(JSON.parse(outroResponse.choices[0].message.content || '{}'));
 
@@ -65,19 +71,27 @@ export async function POST(req: NextRequest) {
       ...wordPairs.map(pair => ({
         ...exampleStructure.data.structure.slides[1],
         type: "dictation",
-        layers: [
-          ...exampleStructure.data.structure.slides[1].layers.slice(0, -1),
-          {
-            ...exampleStructure.data.structure.slides[1].layers[exampleStructure.data.structure.slides[1].layers.length - 1],
-            info: `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`,
+        layers: exampleStructure.data.structure.slides[1].layers.map(layer => {
+          if (layer.type === 'txt') {
+            switch (layer.id) {
+              case 'word_in_first_language':
+                layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`;
+                break;
+              case 'example_sentence':
+                // Note: You might want to generate an example sentence here if it's not provided in the word pair
+                layer.info = `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">Example sentence for ${pair.first}</span></p>\n`;
+                break;
+            }
           }
-        ],
+          return layer;
+        }),
         activities: [
           {
             ...exampleStructure.data.structure.slides[1].activities[0],
             shapes: [
               {
                 ...exampleStructure.data.structure.slides[1].activities[0].shapes[0],
+                id: "word_in_second_language",
                 settings: {
                   ...exampleStructure.data.structure.slides[1].activities[0].shapes[0].settings,
                   textAnswerArray: [pair.second]
@@ -90,13 +104,12 @@ export async function POST(req: NextRequest) {
       {
         ...exampleStructure.data.structure.slides[2],
         type: "outro",
-        layers: [
-          ...exampleStructure.data.structure.slides[2].layers.slice(0, -1),
-          {
-            ...exampleStructure.data.structure.slides[2].layers[exampleStructure.data.structure.slides[2].layers.length - 1],
-            info: `<p><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`,
+        layers: exampleStructure.data.structure.slides[2].layers.map(layer => {
+          if (layer.type === 'txt') {
+            layer.info = `<p><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`;
           }
-        ]
+          return layer;
+        })
       }
     ];
 
