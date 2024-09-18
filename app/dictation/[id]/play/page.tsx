@@ -15,12 +15,11 @@ export default function DictationPlayPage() {
   }, [params.id])
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-64px)]">
+    <div className="flex justify-center items-center min-h-[calc(100vh-64px)] bg-secondary">
       {iframeUrl && (
         <iframe
           src={iframeUrl}
-          width="1024"
-          height="768"
+          className="w-full max-w-[1024px] h-[80vh] max-h-[768px]"
           style={{ border: 'none' }}
           allowFullScreen
         />

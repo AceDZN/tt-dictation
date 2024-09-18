@@ -4,7 +4,7 @@ import { useState, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { Trash2, Upload } from 'lucide-react'
+import { Trash2, Upload, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { generateTitle } from '@/lib/openai'
 import { useRouter } from 'next/navigation'
@@ -43,6 +43,7 @@ export function DictationForm() {
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
+  const [isLoading, setIsLoading] = useState(false)
 
   const handleAddWordPair = () => {
     setWordPairs([...wordPairs, { first: '', second: '' }])
@@ -60,6 +61,7 @@ export function DictationForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setIsLoading(true)
     
     let finalTitle = title
 
@@ -72,6 +74,7 @@ export function DictationForm() {
       } catch (error) {
         console.error('Error generating title:', error)
         toast.error('Failed to generate title')
+        setIsLoading(false)
         return
       }
     }
@@ -96,10 +99,12 @@ export function DictationForm() {
 
       const data = await response.json()
       toast.success('Dictation created successfully')
+      setIsLoading(false)
       router.push(`/dictation/${data.dictationId}/play`)
     } catch (error) {
       console.error('Error creating dictation:', error)
       toast.error('Failed to create dictation')
+      setIsLoading(false)
     }
   }
 
@@ -172,17 +177,18 @@ export function DictationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto p-6 bg-secondary rounded-lg shadow-md">
       <Input
         type="text"
         placeholder="Title (optional)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
+        className="bg-white text-gray-800 border-cyan-700"
       />
 
-      <div className="flex space-x-4">
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <Select value={firstLanguage} onValueChange={setFirstLanguage}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px] bg-white text-gray-800 border-cyan-700">
             <SelectValue placeholder="Select first language" />
           </SelectTrigger>
           <SelectContent>
@@ -194,7 +200,7 @@ export function DictationForm() {
           </SelectContent>
         </Select>
         <Select value={secondLanguage} onValueChange={setSecondLanguage}>
-          <SelectTrigger className="w-[180px]">
+          <SelectTrigger className="w-full sm:w-[180px] bg-white text-gray-800 border-cyan-700">
             <SelectValue placeholder="Select second language" />
           </SelectTrigger>
           <SelectContent>
@@ -207,11 +213,12 @@ export function DictationForm() {
         </Select>
       </div>
 
-      <div className="flex space-x-4">
+      <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
         <Button
           type="button"
           variant={inputMethod === 'manual' ? 'default' : 'outline'}
           onClick={() => setInputMethod('manual')}
+          className="w-full sm:w-auto"
         >
           Manual Input
         </Button>
@@ -219,6 +226,7 @@ export function DictationForm() {
           type="button"
           variant={inputMethod === 'file' ? 'default' : 'outline'}
           onClick={() => setInputMethod('file')}
+          className="w-full sm:w-auto"
         >
           File Upload
         </Button>
@@ -227,13 +235,14 @@ export function DictationForm() {
       {inputMethod === 'manual' && (
         <div className="space-y-4">
           {wordPairs.map((pair, index) => (
-            <div key={index} className="flex space-x-2">
+            <div key={index} className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-2">
               <Input
                 type="text"
                 placeholder={`${firstLanguage} word`}
                 value={pair.first}
                 onChange={(e) => handleWordPairChange(index, 'first', e.target.value)}
                 required
+                className="bg-white text-gray-800 border-cyan-700"
               />
               <Input
                 type="text"
@@ -241,18 +250,20 @@ export function DictationForm() {
                 value={pair.second}
                 onChange={(e) => handleWordPairChange(index, 'second', e.target.value)}
                 required
+                className="bg-white text-gray-800 border-cyan-700"
               />
               <Button
                 type="button"
                 variant="outline"
                 size="icon"
                 onClick={() => handleRemoveWordPair(index)}
+                className="w-full sm:w-auto"
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
             </div>
           ))}
-          <Button type="button" variant="outline" onClick={handleAddWordPair}>
+          <Button type="button" variant="outline" onClick={handleAddWordPair} className="w-full sm:w-auto">
             + Add new word pair
           </Button>
         </div>
@@ -265,11 +276,13 @@ export function DictationForm() {
             accept=".txt,.pdf,.doc,.docx,image/*"
             onChange={handleFileChange}
             ref={fileInputRef}
+            className="bg-white text-gray-800 border-cyan-700"
           />
           <Button
             type="button"
             onClick={handleFileUpload}
             disabled={!file || isUploading}
+            className="w-full sm:w-auto"
           >
             {isUploading ? 'Uploading...' : 'Upload'}
             <Upload className="ml-2 h-4 w-4" />
@@ -278,8 +291,15 @@ export function DictationForm() {
         </div>
       )}
 
-      <Button type="submit" disabled={isSubmitDisabled}>
-        Create Dictation
+      <Button type="submit" disabled={isSubmitDisabled || isLoading} className="w-full">
+        {isLoading ? (
+          <>
+            <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+            Creating Dictation...
+          </>
+        ) : (
+          'Create Dictation'
+        )}
       </Button>
     </form>
   )
