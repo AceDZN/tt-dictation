@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Trash2, Upload } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { generateTitle } from '@/lib/openai'
+import { useRouter } from 'next/navigation'
 
 interface WordPair {
   first: string
@@ -43,6 +44,7 @@ export function DictationForm() {
   const [isUploading, setIsUploading] = useState(false)
   const [error, setError] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const router = useRouter()
 
   const handleAddWordPair = () => {
     setWordPairs([...wordPairs, { first: '', second: '' }])
@@ -76,8 +78,31 @@ export function DictationForm() {
       }
     }
 
-    // TODO: Implement form submission logic
-    console.log({ title: finalTitle, firstLanguage, secondLanguage, wordPairs, inputMethod })
+    try {
+      const response = await fetch('/api/create-dictation', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          title: finalTitle,
+          firstLanguage,
+          secondLanguage,
+          wordPairs,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to create dictation')
+      }
+
+      const data = await response.json()
+      toast.success('Dictation created successfully')
+      router.push(`/dictation/${data.dictationId}`)
+    } catch (error) {
+      console.error('Error creating dictation:', error)
+      toast.error('Failed to create dictation')
+    }
   }
 
   const isSubmitDisabled = wordPairs.every(pair => !pair.first && !pair.second)
