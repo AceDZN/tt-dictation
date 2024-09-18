@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 export function Header() {
   return (
-    <header className="flex items-center justify-between px-4 py-2 bg-white shadow-md">
+    <header className="flex items-center justify-between px-4 py-2 bg-white shadow-md sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <Link
         href="/"
         className="relative flex h-16 w-16 items-center justify-center rounded-full"
