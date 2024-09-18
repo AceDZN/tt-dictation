@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Generate outro slide content
-    const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be encouraging and positive.`;
+    const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be Short and consice and written in ${secondLanguage}. Maximum of 6 words.`;
     const outroResponse = await openai.chat.completions.create({
       model: 'gpt-4o-mini',
       response_format: zodResponseFormat(OutroContentSchema, "outro_content"),
@@ -103,11 +103,17 @@ export async function POST(req: NextRequest) {
           if (layer.type === 'txt') {
             switch (layer.id) {
               case 'word_in_first_language':
-                layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`;
-                break;
+                return {
+                  ...layer,
+                  info: `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`
+                };
               case 'example_sentence':
-                layer.info = `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">${pair.sentence}</span></p>\n`;
-                break;
+                return {
+                  ...layer,
+                  info: `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">${pair.sentence}</span></p>\n`
+                };
+              default:
+                return layer;
             }
           }
           return layer;
@@ -133,7 +139,10 @@ export async function POST(req: NextRequest) {
         type: "outro",
         layers: exampleStructure.data.structure.slides[2].layers.map(layer => {
           if (layer.type === 'txt') {
-            layer.info = `<p><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`;
+            return {
+              ...layer,
+              info: `<p><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${outroContent.congratsMessage}</strong></span></p>\n`
+            };
           }
           return layer;
         })
