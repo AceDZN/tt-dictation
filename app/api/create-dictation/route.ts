@@ -20,7 +20,7 @@ const ExampleSentenceSchema = z.object({
 
 export async function POST(req: NextRequest) {
   try {
-    const { title, firstLanguage, secondLanguage, wordPairs } = await req.json();
+    const { title, firstLanguage, secondLanguage, wordPairs, quizParameters } = await req.json();
 
     // Read the example structure
     const exampleStructurePath = path.join(process.cwd(), 'example_data', 'dictation_structure.json');
@@ -153,6 +153,14 @@ export async function POST(req: NextRequest) {
     //dictationStructure.data.album_store.album.fields.name = title;
     //dictationStructure.data.album_store.album.fields.description = `Dictation game for ${firstLanguage} to ${secondLanguage}`;
     // Add more field updates as necessary
+
+    // Update the quiz parameters in the structure
+    dictationStructure.data.structure.settings.quizParameters = {
+      globalTimeLimit: quizParameters.globalTimeLimit,
+      globalLivesLimit: quizParameters.globalLivesLimit,
+      activityTimeLimit: quizParameters.activityTimeLimit,
+      quizModeEnabled: quizParameters.quizModeEnabled
+    };
 
     // Generate a unique ID for the dictation
     const dictationId = uuidv4();

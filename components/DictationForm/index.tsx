@@ -8,10 +8,19 @@ import { Trash2, Upload, Loader2 } from 'lucide-react'
 import { toast } from 'react-hot-toast'
 import { generateTitle } from '@/lib/openai'
 import { useRouter } from 'next/navigation'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Label } from '@/components/ui/label'
 
 interface WordPair {
   first: string
   second: string
+}
+
+interface QuizParameters {
+  globalTimeLimit: number
+  globalLivesLimit: number
+  activityTimeLimit: number
+  quizModeEnabled: boolean
 }
 
 const languages = [
@@ -44,6 +53,12 @@ export function DictationForm() {
   const fileInputRef = useRef<HTMLInputElement>(null)
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
+  const [quizParameters, setQuizParameters] = useState<QuizParameters>({
+    globalTimeLimit: 0,
+    globalLivesLimit: 10,
+    activityTimeLimit: 30,
+    quizModeEnabled: true
+  })
 
   const handleAddWordPair = () => {
     setWordPairs([...wordPairs, { first: '', second: '' }])
@@ -57,6 +72,10 @@ export function DictationForm() {
     const newWordPairs = [...wordPairs]
     newWordPairs[index][language] = value
     setWordPairs(newWordPairs)
+  }
+
+  const handleQuizParameterChange = (param: keyof QuizParameters, value: number | boolean) => {
+    setQuizParameters(prev => ({ ...prev, [param]: value }))
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -90,6 +109,7 @@ export function DictationForm() {
           firstLanguage,
           secondLanguage,
           wordPairs,
+          quizParameters,
         }),
       })
 
@@ -290,6 +310,53 @@ export function DictationForm() {
           {error && <p className="text-red-500 text-sm">{error}</p>}
         </div>
       )}
+
+      <div className="space-y-4">
+        <h3 className="text-lg font-semibold">Quiz Parameters</h3>
+        <div className="flex items-center space-x-2">
+          <Checkbox
+            id="quizModeEnabled"
+            checked={quizParameters.quizModeEnabled}
+            onCheckedChange={(checked) => handleQuizParameterChange('quizModeEnabled', checked)}
+          />
+          <Label htmlFor="quizModeEnabled">Enable Quiz Mode</Label>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          <div>
+            <Label htmlFor="globalTimeLimit">Global Time Limit (seconds)</Label>
+            <Input
+              id="globalTimeLimit"
+              type="number"
+              min="0"
+              value={quizParameters.globalTimeLimit}
+              onChange={(e) => handleQuizParameterChange('globalTimeLimit', parseInt(e.target.value))}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="globalLivesLimit">Global Lives Limit</Label>
+            <Input
+              id="globalLivesLimit"
+              type="number"
+              min="1"
+              value={quizParameters.globalLivesLimit}
+              onChange={(e) => handleQuizParameterChange('globalLivesLimit', parseInt(e.target.value))}
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="activityTimeLimit">Activity Time Limit (seconds)</Label>
+            <Input
+              id="activityTimeLimit"
+              type="number"
+              min="0"
+              value={quizParameters.activityTimeLimit}
+              onChange={(e) => handleQuizParameterChange('activityTimeLimit', parseInt(e.target.value))}
+              className="mt-1"
+            />
+          </div>
+        </div>
+      </div>
 
       <Button type="submit" disabled={isSubmitDisabled || isLoading} className="w-full">
         {isLoading ? (
