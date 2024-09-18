@@ -1,7 +1,7 @@
 import OpenAI from 'openai';
 import { z } from "zod";
 import { zodResponseFormat } from "openai/helpers/zod";
-import { LLMResponse, WordPair } from '@/types';
+import { WordPair } from '@/types';
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,

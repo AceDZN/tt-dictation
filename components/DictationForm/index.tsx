@@ -1,11 +1,12 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useCallback } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { Trash2, Upload } from 'lucide-react'
 import { toast } from 'react-hot-toast'
+import { generateTitle } from '@/lib/openai'
 
 interface WordPair {
   first: string
@@ -57,11 +58,29 @@ export function DictationForm() {
     setWordPairs(newWordPairs)
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    
+    let finalTitle = title
+
+    if (!title.trim()) {
+      try {
+        const generatedTitle = await generateTitle(wordPairs, firstLanguage, secondLanguage)
+        finalTitle = generatedTitle
+        setTitle(generatedTitle)
+        toast.success('Title generated successfully')
+      } catch (error) {
+        console.error('Error generating title:', error)
+        toast.error('Failed to generate title')
+        return
+      }
+    }
+
     // TODO: Implement form submission logic
-    console.log({ title, firstLanguage, secondLanguage, wordPairs, inputMethod })
+    console.log({ title: finalTitle, firstLanguage, secondLanguage, wordPairs, inputMethod })
   }
+
+  const isSubmitDisabled = wordPairs.every(pair => !pair.first && !pair.second)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -133,10 +152,9 @@ export function DictationForm() {
     <form onSubmit={handleSubmit} className="space-y-6">
       <Input
         type="text"
-        placeholder="Title"
+        placeholder="Title (optional)"
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        required
       />
 
       <div className="flex space-x-4">
@@ -237,7 +255,9 @@ export function DictationForm() {
         </div>
       )}
 
-      <Button type="submit">Create Dictation</Button>
+      <Button type="submit" disabled={isSubmitDisabled}>
+        Create Dictation
+      </Button>
     </form>
   )
 }

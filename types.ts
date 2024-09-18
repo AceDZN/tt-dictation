@@ -1,8 +1,8 @@
 export interface WordPair {
   first: string
   second: string
-  sentence: string
-  imagePrompt: string
+  sentence?: string
+  imagePrompt?: string
 }
 
 

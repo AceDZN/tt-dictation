@@ -262,7 +262,7 @@
                }
             },
             {
-               "type":"dictation_slide",
+               "type":"dictation",
                "layers":[
                   {
                      "InteractiveLoopType":0,
