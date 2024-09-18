@@ -15,7 +15,7 @@ export default function DictationPlayPage() {
   }, [params.id])
 
   return (
-    <div className="flex justify-center items-center min-h-[calc(100vh-64px)] bg-secondary">
+    <div className="flex justify-center items-center min-h-[calc(100vh-64px)] ">
       {iframeUrl && (
         <iframe
           src={iframeUrl}

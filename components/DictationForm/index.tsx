@@ -177,7 +177,7 @@ export function DictationForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto p-6 bg-secondary rounded-lg shadow-md">
+    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl mx-auto p-6  rounded-xl shadow-md bg-white">
       <Input
         type="text"
         placeholder="Title (optional)"
