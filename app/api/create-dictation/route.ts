@@ -14,6 +14,10 @@ const OutroContentSchema = z.object({
   congratsMessage: z.string(),
 });
 
+const ExampleSentenceSchema = z.object({
+  sentence: z.string(),
+});
+
 export async function POST(req: NextRequest) {
   try {
     const { title, firstLanguage, secondLanguage, wordPairs } = await req.json();
@@ -24,25 +28,25 @@ export async function POST(req: NextRequest) {
 
     // Create intro slide content programmatically
     const introSlide = JSON.parse(JSON.stringify(exampleStructure.data.structure.slides[0]));
+    introSlide.layers = introSlide.layers.filter(layer => layer.id !== 'third_column');
+
+    const totalPairs = wordPairs.length;
+    const firstColumnPairs = Math.ceil(Math.min(totalPairs, 12) / 2);
+    const secondColumnPairs = Math.min(totalPairs - firstColumnPairs, 6);
+    const thirdColumnPairs = totalPairs - firstColumnPairs - secondColumnPairs;
+
     introSlide.layers = introSlide.layers.map(layer => {
       if (layer.type === 'txt') {
         switch (layer.id) {
           case 'first_column':
-            layer.info = wordPairs.slice(0, 5).map(pair => 
+            layer.info = wordPairs.slice(0, firstColumnPairs).map(pair => 
               `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
             ).join('');
             break;
           case 'second_column':
-            layer.info = wordPairs.slice(5, 11).map(pair => 
+            layer.info = wordPairs.slice(firstColumnPairs, firstColumnPairs + secondColumnPairs).map(pair => 
               `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
             ).join('');
-            break;
-          case 'third_column':
-            if (wordPairs[11]) {
-              layer.info = `<p style="direction:rtl;text-align:right;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${wordPairs[11].first} - ${wordPairs[11].second}</span></p>\n`;
-            } else {
-              layer.info = '';
-            }
             break;
           case 'game_title':
             layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
@@ -51,6 +55,14 @@ export async function POST(req: NextRequest) {
       }
       return layer;
     });
+
+    if (thirdColumnPairs > 0) {
+      const thirdColumnLayer = JSON.parse(JSON.stringify(exampleStructure.data.structure.slides[0].layers.find(layer => layer.id === 'third_column')));
+      thirdColumnLayer.info = wordPairs.slice(firstColumnPairs + secondColumnPairs).map(pair => 
+        `<p style="direction:rtl;text-align:right;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+      ).join('');
+      introSlide.layers.push(thirdColumnLayer);
+    }
 
     // Generate outro slide content
     const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be encouraging and positive.`;
@@ -62,13 +74,29 @@ export async function POST(req: NextRequest) {
     });
     const outroContent = OutroContentSchema.parse(JSON.parse(outroResponse.choices[0].message.content || '{}'));
 
+    // Generate example sentences for word pairs that don't have them
+    const wordPairsWithSentences = await Promise.all(wordPairs.map(async (pair) => {
+      if (!pair.sentence) {
+        const sentencePrompt = `Generate a simple example sentence in ${secondLanguage} using the word "${pair.second}".`;
+        const sentenceResponse = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          response_format: zodResponseFormat(ExampleSentenceSchema, "example_sentence"),
+          messages: [{ role: 'user', content: sentencePrompt }],
+          max_tokens: 100,
+        });
+        const sentenceContent = ExampleSentenceSchema.parse(JSON.parse(sentenceResponse.choices[0].message.content || '{}'));
+        return { ...pair, sentence: sentenceContent.sentence };
+      }
+      return pair;
+    }));
+
     // Create the dictation structure based on the example
     const dictationStructure = JSON.parse(JSON.stringify(exampleStructure));
     
     // Update the structure with the new content
     dictationStructure.data.structure.slides = [
       introSlide,
-      ...wordPairs.map(pair => ({
+      ...wordPairsWithSentences.map(pair => ({
         ...exampleStructure.data.structure.slides[1],
         type: "dictation",
         layers: exampleStructure.data.structure.slides[1].layers.map(layer => {
@@ -78,8 +106,7 @@ export async function POST(req: NextRequest) {
                 layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first}</span></p>\n`;
                 break;
               case 'example_sentence':
-                // Note: You might want to generate an example sentence here if it's not provided in the word pair
-                layer.info = `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">Example sentence for ${pair.first}</span></p>\n`;
+                layer.info = `<p><span style="color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;">${pair.sentence}</span></p>\n`;
                 break;
             }
           }
