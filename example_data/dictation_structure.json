@@ -164,6 +164,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "first_column",
                      "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord1} - ${langagueTwoWord1}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord2} - ${langagueTwoWord2}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord3} - ${langagueTwoWord3}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord4} - ${langagueTwoWord4}</span></p>\n<pstyle=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord5} - ${langagueTwoWord5}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -182,6 +183,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "second_column",
                      "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord6} - ${langagueTwoWord6}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord7} - ${langagueTwoWord7}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord8} - ${langagueTwoWord8}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord9} - ${langagueTwoWord9}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord10} - ${langagueTwoWord10}</span></p>\n<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord11} - ${langagueTwoWord11}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -200,6 +202,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "third_column",
                      "info":"<p style=\"direction:rtl;text-align:right;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${langagueOneWord12} - ${langagueTwoWord12}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -218,6 +221,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "game_title",
                      "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\"><strong>${firstLanguageGameTitle}</strong></span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -283,6 +287,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "word_in_first_language",
                      "info":"<p style=\"text-align:center;direction:rtl;\"><span style=\"color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;\">${firstLanguageWord}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -301,6 +306,7 @@
                      "interactiveToggleShow":false
                   },
                   {
+                    "id": "example_sentence",
                      "info":"<p><span style=\"color: rgb(79, 79, 79);font-size: 48px;font-family: Varela Round;\">${sentence}</span></p>\n",
                      "InteractiveLoopType":0,
                      "InteractiveShowType":0,
@@ -328,6 +334,7 @@
                      },
                      "shapes":[
                         {
+                           "id": "word_in_second_language",
                            "filePathThumb":"shape0",
                            "settings":{
                               "textAnswerArray":[

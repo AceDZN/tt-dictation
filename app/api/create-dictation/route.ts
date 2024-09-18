@@ -10,12 +10,6 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
-const IntroContentSchema = z.object({
-  title: z.string(),
-  wordPairsList: z.string(),
-  introContent: z.string(),
-});
-
 const OutroContentSchema = z.object({
   congratsMessage: z.string(),
 });
@@ -28,15 +22,29 @@ export async function POST(req: NextRequest) {
     const exampleStructurePath = path.join(process.cwd(), 'example_data', 'dictation_structure.json');
     const exampleStructure = JSON.parse(fs.readFileSync(exampleStructurePath, 'utf8'));
 
-    // Generate intro slide content
-    const introPrompt = `Generate content for the intro slide of a dictation game titled "${title}" with word pairs (${firstLanguage} - ${secondLanguage}): ${wordPairs.map(pair => `${pair.first} - ${pair.second}`).join(', ')}. Provide a motivating introduction explaining the game briefly.`;
-    const introResponse = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      response_format: zodResponseFormat(IntroContentSchema, "intro_content"),
-      messages: [{ role: 'user', content: introPrompt }],
-      max_tokens: 4000,
-    });
-    const introContent = IntroContentSchema.parse(JSON.parse(introResponse.choices[0].message.content || '{}'));
+    // Create intro slide content programmatically
+    const introSlide = JSON.parse(JSON.stringify(exampleStructure.data.structure.slides[0]));
+    introSlide.layers = introSlide.layers.map(layer => {
+      if (layer.type === 'txt') {
+        if (layer.info.includes('${firstLanguageGameTitle}')) {
+          layer.info = `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${title}</strong></span></p>\n`;
+        } else if (layer.info.includes('${langagueOneWord1}')) {
+          const wordPairLayers = [];
+          for (let i = 0; i < wordPairs.length; i += 6) {
+            const layerWordPairs = wordPairs.slice(i, i + 6);
+            const layerContent = layerWordPairs.map((pair, index) => 
+              `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;">${pair.first} - ${pair.second}</span></p>\n`
+            ).join('');
+            wordPairLayers.push({
+              ...layer,
+              info: layerContent
+            });
+          }
+          return wordPairLayers;
+        }
+      }
+      return layer;
+    }).flat();
 
     // Generate outro slide content
     const outroPrompt = `Generate a congratulatory message for completing the dictation game titled "${title}". The message should be encouraging and positive.`;
@@ -53,39 +61,7 @@ export async function POST(req: NextRequest) {
     
     // Update the structure with the new content
     dictationStructure.data.structure.slides = [
-      {
-        ...exampleStructure.data.structure.slides[0],
-        type: "intro",
-        layers: [
-          ...exampleStructure.data.structure.slides[0].layers.slice(0, -1),
-          {
-            ...exampleStructure.data.structure.slides[0].layers[exampleStructure.data.structure.slides[0].layers.length - 1],
-            info: `<p style="text-align:center;direction:rtl;"><span style="color: rgb(79,79,79);font-size: 48px;font-family: Varela Round;"><strong>${introContent.title}</strong></span></p>\n`,
-          },
-          {
-            type: "txt",
-            info: introContent.wordPairsList,
-            InteractiveLoopType: 0,
-            InteractiveShowType: 0,
-            transform: [0.8479304313659668, 0, 0, 0.8479304313659668, -248.91859436035156, 50.036190032958984],
-            height: 426,
-            width: 517,
-            interactiveLayerSound: "",
-            interactiveToggleShow: false
-          },
-          {
-            type: "txt",
-            info: introContent.introContent,
-            InteractiveLoopType: 0,
-            InteractiveShowType: 0,
-            transform: [0.8479304313659668, 0, 0, 0.8479304313659668, 244.89845275878906, 51.890541076660156],
-            height: 426,
-            width: 517,
-            interactiveLayerSound: "",
-            interactiveToggleShow: false
-          }
-        ]
-      },
+      introSlide,
       ...wordPairs.map(pair => ({
         ...exampleStructure.data.structure.slides[1],
         type: "dictation",
@@ -126,7 +102,7 @@ export async function POST(req: NextRequest) {
 
     // Update other necessary fields in the structure
     dictationStructure.data.album_store.album.fields.name = title;
-    dictationStructure.data.album_store.album.fields.description = introContent.introContent;
+    dictationStructure.data.album_store.album.fields.description = `Dictation game for ${firstLanguage} to ${secondLanguage}`;
     // Add more field updates as necessary
 
     // Generate a unique ID for the dictation
